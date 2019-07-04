@@ -1,0 +1,63 @@
+int PlatformDependentMain(...)
+{
+	ParseCommandParameters(&parameterPack, argc, argv);
+	ParseConfig(configFileLocation, &config);
+	
+	PlatformWindow window(L"Render engine example", 1920, 1080, NO_RESIZE | LIMIT_CURSOR); // Internally owns a void* to the platform-specific window handle (HWND, X-Server wnd, ...)
+	
+	RenderDevice* device = nullptr;
+	
+	switch (config.graphicsBackendType)
+	{
+		case BACKEND::DX11:
+		{
+			DX11CreationInformation creationInfo;
+			creationInfo.pWindowHandle = &window;
+		
+			device = CreateDX11RenderDevice(creationInfo, ...);
+			break;
+		}
+		
+		case BACKEND::DX12:
+		{
+			DX12CreationInformation creationInfo;
+			creationInfo.pWindowHandle = &window;
+			creationInfo.bEnableDebugLayer = true;
+			
+			device = CreateDX12RenderDevice(creationInfo, ...);
+			break;
+		}
+		
+		CASE BACKEND::GL:
+		{
+			GLCreationInformation creationInfo;
+			creationInfo.pWindowHandle = &window;
+			
+			device = CreateGLRenderDevice(creationInfo, ...);
+			break;
+		}
+		
+		CASE BACKEND::VULKAN:
+		{
+			VkCreationInformation creationInfo;
+			creationInfo.pWindowHandle = &window;
+			creationInfo.bEnableValidationLayer = true;
+			
+			device = CreatVkRenderDevice(creationInfo, ...);
+			break;
+		}
+		
+		default:
+		{
+			// ...
+		}
+	}
+	
+	while (!shutdown)
+	{
+		MessagePumpFunc(...);
+		
+		device->Render();
+		device->Present();
+	}
+}
