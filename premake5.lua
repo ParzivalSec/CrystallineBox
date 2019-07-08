@@ -16,6 +16,7 @@ project "CrystallineSampleWin32"
 	entrypoint "mainCRTStartup"
 	targetdir(BUILD_DIR .. "/samples/sample_win32/%{cfg.buildcfg}")
 	debugdir("./samples/sample_win32")
+	characterset ("Unicode")
 	
 	files { "samples/sample_win32/**.h", "samples/sample_win32/**.cpp" }
 	
@@ -90,6 +91,7 @@ project "CrystallineBox"
     cppdialect "C++11"
     systemversion "latest" -- to use latest windows SDK (VS17 defaulted to 8.1 SDK in my case)
     targetdir(BUILD_DIR .. "/crystalline_box/%{cfg.buildcfg}")
+	characterset ("Unicode")
 
 ---------------------------
 -- Compiler/Linker settings
