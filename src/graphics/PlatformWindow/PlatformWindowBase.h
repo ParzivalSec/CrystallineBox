@@ -7,31 +7,45 @@ namespace cry
 	class PlatformWindowBase
 	{
 	public:
-		PlatformWindowBase(const wchar_t* title, unsigned int width, unsigned int height);
+		PlatformWindowBase(const char* title, unsigned int width, unsigned int height);
+
+		void Show(void) const { mImpl->Show(); }
+		void Hide(void) const { mImpl->Hide(); }
+
+		void Resize(unsigned int width, unsigned int height);
 
 		unsigned int GetWidth(void) const { return mWidth; }
 		unsigned int GetHeight(void) const { return mHeight; }
-		const wchar_t* GetTitle(void) const { return mTitle; }
+		const char* GetTitle(void) const { return mTitle; }
 
-		void* GetNativeHandle(void) { return mImpl->GetNativeHandle(); }
+		void* GetNativeHandle(void) const { return mImpl->GetNativeHandle(); }
 
 	private:
 		
 		unsigned int mWidth;
 		unsigned int mHeight;
 		
-		const wchar_t* mTitle;
+		const char* mTitle;
 
 		WindowImpl* mImpl;
 	};
 
 	template<typename WindowImpl>
-	inline PlatformWindowBase<WindowImpl>::PlatformWindowBase(const wchar_t * title, unsigned int width, unsigned int height)
+	PlatformWindowBase<WindowImpl>::PlatformWindowBase(const char* title, unsigned int width, unsigned int height)
 		: mWidth(width)
 		, mHeight(height)
 		, mTitle(title)
 	{
 		mImpl = new WindowImpl(title, width, height);
+	}
+
+	template<typename WindowImpl>
+	void PlatformWindowBase<WindowImpl>::Resize(unsigned int width, unsigned int height)
+	{
+		mImpl->Resize(width, height);
+
+		mWidth = width;
+		mHeight = height;
 	}
 }
 

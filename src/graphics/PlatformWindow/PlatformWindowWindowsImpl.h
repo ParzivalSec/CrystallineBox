@@ -1,17 +1,24 @@
 #ifndef _PLATFORM_WINDOW_WINDOWS_IMPL_H_
 #define _PLATFORM_WINDOW_WINDOWS_IMPL_H_
 
+typedef struct HWND__* HWND;
+
 namespace cry
 {
 	class PlatformWindowWindowsImpl
 	{
 	public:
-		PlatformWindowWindowsImpl(const wchar_t* title, unsigned int width, unsigned int height);
+		PlatformWindowWindowsImpl(const char* title, unsigned int width, unsigned int height);
 
-		void* GetNativeHandle(void) { return mNativeHandle; }
+		void Show(void) const;
+		void Hide(void) const;
+
+		void Resize(unsigned int width, unsigned int height) const;
+
+		void* GetNativeHandle(void) const { return mNativeHandle; }
 
 	private:
-		void* mNativeHandle;
+		HWND mNativeHandle;
 	};
 }
 
